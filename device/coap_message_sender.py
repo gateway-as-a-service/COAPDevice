@@ -14,11 +14,11 @@ class CoAPMessageSender(object):
     def send_message_put(self, path, data):
         attempts = 0
         while attempts < self.MAX_ATTEMPTS:
-            self.logger.info("Attempt {} to send the message to coap microservice")
+            self.logger.info("Attempt {} to send the message to coap microservice".format(attempts))
 
             response = self.coap_client.put(path, json.dumps(data), timeout=10)
+            self.logger.info("Response: {}".format(response))
             if response:
-                self.logger.info("Response: {}".format(response))
                 self.logger.info(
                     "Successfully sent the message {} to coap microservice at path {}".format(data, path)
                 )

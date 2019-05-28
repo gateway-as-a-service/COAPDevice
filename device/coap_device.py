@@ -2,14 +2,13 @@ import random
 import time
 
 from device.coap_message_sender import CoAPMessageSender
+from device.configs.config import GASS_COAP_MICROSERVICE_PORT, GASS_COAP_MICROSERVICE_PATH
 from device.configs.device_info import DEVICE_INFO
 from device.discovery_client import HubDiscoveryClient
 from device.libs.utils import retrieve_logger
 
 
 class COAPSmartObject(object):
-    COAP_SERVER_HUB_PORT = 5683
-    COAP_SERVER_HUB_PATH = "devices"
     SLEEP_PERIOD = 60
 
     def __init__(self, device_info, *args, **kwargs):
@@ -21,7 +20,7 @@ class COAPSmartObject(object):
     def _discover_hub(self):
         hub_discovery_client = HubDiscoveryClient(self.device_info, logger=self.logger)
         hub_address = hub_discovery_client.discover()
-        self.coap_message_sender = CoAPMessageSender(hub_address, self.COAP_SERVER_HUB_PORT, self.logger)
+        self.coap_message_sender = CoAPMessageSender(hub_address, GASS_COAP_MICROSERVICE_PORT, self.logger)
 
     def start(self):
         self._discover_hub()
@@ -34,10 +33,10 @@ class COAPSmartObject(object):
                 "u": self.device_info["u"],
             }
             self.logger.info(
-                "Send the message {} to coap micro-service at path: {}".format(data, self.COAP_SERVER_HUB_PATH)
+                "Send the message {} to coap micro-service at path: {}".format(data, GASS_COAP_MICROSERVICE_PATH)
             )
 
-            self.coap_message_sender.send_message_put(self.COAP_SERVER_HUB_PATH, data)
+            self.coap_message_sender.send_message_put(GASS_COAP_MICROSERVICE_PATH, data)
 
             self.logger.info("Sleeping.....")
             time.sleep(self.SLEEP_PERIOD)
