@@ -1,4 +1,5 @@
 import uuid
+import sys
 
 from device.libs.utils import get_ip_address
 
@@ -13,6 +14,7 @@ DEVICE_INFO = {
     "port": 5680,
     "unit": "Celsius",
     "u": "C",
-    "min": 10,
-    "max": 35,
+    "min": 15,
+    "max": 23,
 }
+DEVICE_INFO["id"] = sys.argv[1]

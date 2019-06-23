@@ -1,4 +1,5 @@
 import json
+import time
 
 from coapthon.resources.resource import Resource
 from coapthon.server.coap import CoAP
@@ -38,6 +39,7 @@ class CoAPSubscriber(Resource):
             "n": self.device_info["name"],
             "v": received_message["value"],
             "u": self.device_info["u"],
+            "t": time.time(),
         }
         self.logger.info(
             "Send message {} to the coap micro-service at path: {}"

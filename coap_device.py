@@ -25,12 +25,15 @@ class COAPSmartObject(object):
     def start(self):
         self._discover_hub()
 
-        while True:
+        count = 0
+        while count < 300:
+            self.logger.info("Count: {}".format(count))
             data = {
                 "id": self.device_info["id"],
                 "n": self.device_info["name"],
                 "v": random.randint(self.device_info["min"], self.device_info["max"]),
                 "u": self.device_info["u"],
+                "t": time.time(),
             }
             self.logger.info(
                 "Send the message {} to coap micro-service at path: {}".format(data, GASS_COAP_MICROSERVICE_PATH)
@@ -38,8 +41,9 @@ class COAPSmartObject(object):
 
             self.coap_message_sender.send_message_put(GASS_COAP_MICROSERVICE_PATH, data)
 
-            self.logger.info("Sleeping.....")
-            time.sleep(self.SLEEP_PERIOD)
+            self.logger.debug("Sleeping.....")
+            time.sleep(random.uniform(0.5, 1))
+            count += 1
 
 
 if __name__ == '__main__':
